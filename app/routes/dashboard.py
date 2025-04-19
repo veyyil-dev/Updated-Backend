@@ -69,6 +69,38 @@ def get_dashboard_data():
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+@dashboard.route('/DashBoardData', methods=['GET'])
+def get_dashboard():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT record_date, goods_produced, co2_emitted, scope1, scope2, username, shift,record_id FROM dashboard_data")
+    rows = cursor.fetchall()
+
+    print(rows)
+
+    cursor.close()
+    connection.close()
+
+    # Convert DB rows to required format
+    data = [
+        {   
+            
+            "date": row[0].strftime('%Y-%m-%d'),  # Format date correctly
+            "goodsProduced": row[1],
+            "co2Emitted": row[2],
+            "scope1": row[3],
+            "scope2": row[4],
+            "username":row[5],
+            "shift":row[6],
+            "record_id":row[7]  
+        }
+        for row in rows
+    ]
+
+    return jsonify(data)
 
 @dashboard.route('/data/<int:key>', methods=["PUT"])
 def update_dashboard_data(key):
