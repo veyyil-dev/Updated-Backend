@@ -11,7 +11,7 @@ if os.path.exists('.env'):
 app = Flask(__name__)
 
 # Configure CORS
-CORS(app, resources={r"/*": {"origins": os.getenv("CORS_ORIGINS", "*")}}, supports_credentials=True)
+CORS(app, origins=["http://localhost:3000", "https://github.com/veyyil-dev/GHG-Conversion-Factors"], supports_credentials=True)
 
 # Configuration
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "UserAdmin")
